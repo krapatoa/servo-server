@@ -1,0 +1,42 @@
+<!-- Make sure to start /home/pi/james/servosocket.py and /home/pi/krapatoa-server/web.py first -->
+<html>
+    <head>
+        <style>
+            iframe {
+                box-shadow: none !important;
+            }
+
+            h1 {
+                color: white;
+                text-shadow: -2px -2px 0 black,-2px -1px 0 black,-2px 0px 0 black,-2px 1px 0 black,-2px 2px 0 black,-1px -2px 0 black,-1px -1px 0 black,-1px 0px 0 black,-1px 1px 0 black,-1px 2px 0 black,0px -2px 0 black,0px -1px 0 black,0px 0px 0 black,0px 1px 0 black,0px 2px 0 black,1px -2px 0 black,1px -1px 0 black,1px 0px 0 black,1px 1px 0 black,1px 2px 0 black,2px -2px 0 black,2px -1px 0 black,2px 0px 0 black,2px 1px 0 black,2px 2px 0 black
+            }
+        </style>
+    </head>
+    <body>
+        <div style="position: relative; z-index: 999;">
+            <h1 id="title"> Current angle: </h1>
+            <input type="range" min="0" max="100" value="50" class="slider" id="mySlider">
+        </div>
+
+        <iframe id="camfeed" style="top: 0px; left:0px; position: absolute; width: 100%; height: 100%; " src=""></iframe>
+        
+        <script>
+            //Embed lucas's camera webserver in the page
+            var hostname = "http://" + (window.location.host.split(":")[0]);
+            var camFeed = document.getElementById("camfeed")
+            camFeed.src = hostname + ":5000/video"
+        
+            const httpRequest = new XMLHttpRequest();
+            var slider = document.getElementById("mySlider");
+
+            //Update james's webserver whenever a request is changed
+            setInterval(function (){
+                document.getElementById("title").innerHTML = "Current angle: " + slider.value
+                httpRequest.open("GET", "duty/" + slider.value, true);
+                httpRequest.send();
+            }, 300) //300ms interval between updates
+
+        </script>
+
+    </body>
+</html>

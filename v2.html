@@ -1,0 +1,37 @@
+<!-- Make sure to start /home/pi/james/servosocket.py and /home/pi/krapatoa-server/web.py first -->
+<html>
+    <head>
+        <style>
+            h1 {
+                color: white;
+                text-shadow: -2px -2px 0 black,-2px -1px 0 black,-2px 0px 0 black,-2px 1px 0 black,-2px 2px 0 black,-1px -2px 0 black,-1px -1px 0 black,-1px 0px 0 black,-1px 1px 0 black,-1px 2px 0 black,0px -2px 0 black,0px -1px 0 black,0px 0px 0 black,0px 1px 0 black,0px 2px 0 black,1px -2px 0 black,1px -1px 0 black,1px 0px 0 black,1px 1px 0 black,1px 2px 0 black,2px -2px 0 black,2px -1px 0 black,2px 0px 0 black,2px 1px 0 black,2px 2px 0 black
+            }
+        </style>
+    </head>
+    <body style="background-image: url('http://192.168.188.226:5000/video'); background-size:cover;">
+        <div style="position: relative; z-index: 999;">
+            <h1 id="title"> Current angle: </h1>
+            <input type="range" min="0" max="100" value="50" class="slider" id="mySlider">
+        </div>
+
+        <script>
+            const httpRequest = new XMLHttpRequest();
+            // var slider = document.getElementById("mySlider");
+            let position = fetch('/getduty');
+
+            // setInterval(function (){
+            //     document.getElementById("title").innerHTML = "Current angle: " + slider.value
+            //     httpRequest.open("GET", "duty/" + slider.value, true);
+            //     httpRequest.send();
+            // }, 300);
+
+            window.onload = function () {
+                DeviceOrientationEvent.requestPermission();
+                window.addEventListener('deviceorientation', function (ev) {
+                    document.getElementById("title").innerHTML = "Current anglebla: " + ev.gamma;
+                });
+            };
+        </script>
+
+    </body>
+</html>
